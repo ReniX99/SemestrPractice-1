@@ -96,15 +96,9 @@
               name="priority"
               class="rounded-[6px] border-1 border-[#8e948e] p-[4px] text-[18px]"
             >
-              <option :class="[darkTheme ? 'text-[#272729]' : 'text-white']" value="Высокий">
-                Высокий
-              </option>
-              <option :class="[darkTheme ? 'text-[#272729]' : 'text-white']" value="Средний">
-                Средний
-              </option>
-              <option :class="[darkTheme ? 'text-[#272729]' : 'text-white']" value="Низкий">
-                Низкий
-              </option>
+              <option class="text-[#272729]" value="Высокий">Высокий</option>
+              <option class="text-[#272729]" value="Средний">Средний</option>
+              <option class="text-[#272729]" value="Низкий">Низкий</option>
             </select>
           </div>
         </div>
