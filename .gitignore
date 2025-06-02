@@ -1,0 +1,103 @@
+######################################
+# ASP.NET Core (C# .NET) игнорируемые файлы
+######################################
+
+# Build results
+bin/
+obj/
+out/
+[Bb]uild/
+[Ll]og/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Rider
+.idea/
+
+# Visual Studio
+.vscode/
+.vs/
+
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# ASP.NET secrets
+secrets.json
+
+# IIS
+appsettings.Development.json
+*.dbmdl
+*.pdb
+*.mdb
+*.opendb
+
+# Configuration transforms
+*.Transform.cs
+
+# NuGet packages
+*.nupkg
+*.snupkg
+.nuget/
+packages/
+*.nuspec
+
+# dotCover
+*.dcvr
+
+# Logs
+*.log
+
+# Images
+wwwroot/uploads/*
+
+######################################
+# Node.js / Vue игнорируемые файлы
+######################################
+
+# node_modules
+node_modules/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build output
+dist/
+build/
+vite-dist/
+*.local
+
+# Local env files
+.env
+.env.*.local
+
+# Editor
+.idea/
+.vscode/
+
+# Cache
+.cache/
+temp/
+tmp/
+*.tmp
+
+# Testing
+coverage/
+*.lcov
+
+# Yarn
+.yarn/
+.pnp.*
+.yarnrc.yml
+
+# System
+.DS_Store
+Thumbs.db
