@@ -1,17 +1,33 @@
+## Инструкция
+
+### Установка
+Для запуска программы убедитесь, что у вас установлен PostgreSQL и .NET.SDK на устройстве 
+
+### Запуск
 Для запуска проекта введите следующие команды:
 1. Клонировать указанный репозиторий
 ```{git}
 git clone https://github.com/ReniX99/SemestrPractice-1
 ```
 
-2. Запустить сервер (3000 порт):
+2. Изменить файл **`appsettings.json`** в папке back
+```json
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Host=localhost;Port=5432;Database=ToDoListdb;Username=your-username;Password=your-password"
+  }
+}
+```
+В качестве значений ключей Username и Password введите свои данные от учётной записи PostgreSQL
+
+3. Запустить сервер (5194 порт):
 ```{bash}
 cd back
-npm install
-node server.js
+dotnet ef database update
+dotnet run
 ```
 
-3. Запустить фронтенд (5173 порт):
+4. Запустить фронтенд (5173 порт):
 ```{bash}
 cd front
 npm install
