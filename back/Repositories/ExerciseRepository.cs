@@ -30,4 +30,10 @@ public class ExerciseRepository
     {
         await _context.SaveChangesAsync();
     }
+
+    public async Task Delete(Exercise exercise)
+    {
+        _context.Remove(exercise);
+        await _context.SaveChangesAsync();
+    }
 }

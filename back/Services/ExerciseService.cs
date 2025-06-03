@@ -31,6 +31,10 @@ public class ExerciseService
         {
             ExerciseId = exerciseId,
             UserId = eu,
+        }).Append(new ExerciseUser
+        {
+            ExerciseId = exerciseId,
+            UserId = userId
         }).ToList();
 
         await _exerciseUserRepository.Add(exerciseUserEntities);
@@ -64,5 +68,14 @@ public class ExerciseService
         exerciseEntity.IsActive = updateExerciseDto.IsActive;
 
         await _exerciseRepository.Update();
+    }
+
+    public async Task Delete(int exerciseId)
+    {
+        Exercise? exerciseEntity = await _exerciseRepository.Get(exerciseId);
+
+        if (exerciseEntity == null) throw new Exception("Not Found");
+
+        await _exerciseRepository.Delete(exerciseEntity);
     }
 }

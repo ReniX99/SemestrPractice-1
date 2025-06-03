@@ -52,4 +52,19 @@ public class ExerciseController : ControllerBase
             return NotFound();
         }
     }
+
+    [HttpDelete("{exerciseId:int}")]
+    [Authorize]
+    public async Task<IActionResult> Delete([FromRoute] int exerciseId)
+    {
+        try
+        {
+            await _exerciseService.Delete(exerciseId);
+            return Ok();
+        }
+        catch
+        {
+            return NotFound();
+        }
+    }
 }
