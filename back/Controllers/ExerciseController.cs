@@ -22,8 +22,19 @@ public class ExerciseController : ControllerBase
     public async Task<IActionResult> Create(CreateExerciseDto createExerciseDto)
     {
         int userId = _userService.GetUserId(HttpContext);
-        await _exerciseService.Create(createExerciseDto, userId);
+        int exerciseId = await _exerciseService.Create(createExerciseDto, userId);
 
-        return StatusCode(201);
+        return StatusCode(201, new { id = exerciseId });
+    }
+
+    [HttpGet]
+    [Authorize]
+    public async Task<IActionResult> GetAll()
+    {
+        int userId = _userService.GetUserId(HttpContext);
+
+        List<ExerciseDto> dto = await _exerciseService.GetAll(userId);
+
+        return Ok(dto);
     }
 }

@@ -17,6 +17,7 @@
     title: modalStore.task?.title || '',
     date: modalStore.task?.date || '',
     priority: modalStore.task?.priority || '',
+    userIds: modalStore.task?.userIds || [],
   })
 
   async function handleForm() {
@@ -51,6 +52,7 @@
       title: '',
       date: '',
       priority: '',
+      userIds: [],
     }
   }
 
@@ -116,8 +118,12 @@
         </div>
         <div class="flex flex-col gap-[6px]">
           <label>Пользователи</label>
-          <select multiple class="rounded-[6px] border-1 border-[#8e948e] p-[4px] text-[18px]">
-            <option v-for="user in users" :value="user.id">{{ user.email }}</option>
+          <select
+            v-model="formData.userIds"
+            multiple
+            class="rounded-[6px] border-1 border-[#8e948e] p-[4px] text-[18px]"
+          >
+            <option v-for="user in users" :value="Number(user.id)">{{ user.email }}</option>
           </select>
         </div>
         <button

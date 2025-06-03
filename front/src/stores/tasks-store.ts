@@ -21,7 +21,7 @@ export const useTasksStore = defineStore(
 
     async function addTask(newTask: ITask) {
       try {
-        const response = await api.post('/tasks', newTask)
+        const response = await api.post('/task', newTask)
         newTask.id = response.data.id
 
         tasks.value.push(newTask)
@@ -32,7 +32,7 @@ export const useTasksStore = defineStore(
 
     async function editTask(editableTask: ITask) {
       try {
-        await api.put(`/tasks/${editableTask.id}`, editableTask)
+        await api.put(`/task/${editableTask.id}`, editableTask)
 
         tasks.value[tasks.value.findIndex((t) => t.id === editableTask.id)] = editableTask
       } catch (err) {
@@ -42,7 +42,7 @@ export const useTasksStore = defineStore(
 
     async function deleteTask(id: number) {
       try {
-        await api.delete(`/tasks/${id}`)
+        await api.delete(`/task/${id}`)
 
         tasks.value.splice(
           tasks.value.findIndex((t) => t.id === id),

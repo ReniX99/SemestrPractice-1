@@ -24,13 +24,11 @@
   const { date } = storeToRefs(dateStore)
 
   onMounted(async () => {
-    if (tasks.value.length === 0) {
-      try {
-        const response = await api.get('/tasks')
-        tasks.value = response.data
-      } catch (err) {
-        console.log(err)
-      }
+    try {
+      const response = await api.get('/task')
+      tasks.value = response.data
+    } catch (err) {
+      console.log(err)
     }
     const currentDate = new Date().toISOString().split('T')[0]
     date.value = currentDate

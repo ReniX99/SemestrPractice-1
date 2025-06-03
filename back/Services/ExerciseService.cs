@@ -15,7 +15,7 @@ public class ExerciseService
         _exerciseRepository = exerciseRepository;
         _exerciseUserRepository = exerciseUserRepository;
     }
-    public async Task Create(CreateExerciseDto createExerciseDto, int userId)
+    public async Task<int> Create(CreateExerciseDto createExerciseDto, int userId)
     {
         Exercise exerciseEntity = new Exercise
         {
@@ -34,5 +34,21 @@ public class ExerciseService
         }).ToList();
 
         await _exerciseUserRepository.Add(exerciseUserEntities);
+
+        return exerciseId;
+    }
+
+    public async Task<List<ExerciseDto>> GetAll(int userId)
+    {
+        List<ExerciseUser> exerciseUserEntities = await _exerciseUserRepository.Get(userId);
+
+        return exerciseUserEntities.Select(eu => new ExerciseDto
+        {
+            Id = eu.Exercise.Id,
+            Title = eu.Exercise.Title,
+            Date = eu.Exercise.Date,
+            Priority = eu.Exercise.Priority,
+            IsActive = eu.Exercise.IsActive
+        }).ToList();
     }
 }

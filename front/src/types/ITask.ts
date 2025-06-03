@@ -10,4 +10,5 @@ export interface ITask {
   date: string
   priority: string
   isActive: boolean
+  userIds: number[]
 }

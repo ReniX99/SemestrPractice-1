@@ -81,6 +81,10 @@ builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<JwtProvider>();
 builder.Services.AddScoped<PasswordHasher>();
 
+builder.Services.AddScoped<ExerciseService>();
+builder.Services.AddScoped<ExerciseRepository>();
+builder.Services.AddScoped<ExerciseUserRepository>();
+
 
 builder.Services.AddCors(options =>
 {
