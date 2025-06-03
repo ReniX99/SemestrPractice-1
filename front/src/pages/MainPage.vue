@@ -10,12 +10,13 @@
   import { useThemeStore } from '@/stores/theme-store'
   import DateInput from '@/components/DateInput.vue'
   import { useDateStore } from '@/stores/date-store'
+  import type { IUser } from '@/types/IUser'
 
   const tasksStore = useTasksStore()
   const { tasks } = storeToRefs(tasksStore)
 
   const modalStore = useModalStore()
-  const { isOpen: isOpenModal } = storeToRefs(modalStore)
+  const { isOpen: isOpenModal, userIds } = storeToRefs(modalStore)
 
   const themeStore = useThemeStore()
   const { darkTheme } = storeToRefs(themeStore)
@@ -27,6 +28,9 @@
     try {
       const response = await api.get('/task')
       tasks.value = response.data
+
+      const usersResponse = await api.get<IUser[]>('/user')
+      userIds.value = usersResponse.data
     } catch (err) {
       console.log(err)
     }
@@ -66,7 +70,7 @@
       </section>
       <TaskList />
       <Transition name="modal">
-        <ModalWindow v-show="isOpenModal" />
+        <ModalWindow v-if="isOpenModal" />
       </Transition>
     </div>
   </main>

@@ -23,7 +23,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("auth/register")]
-    public async Task<IActionResult> Register(RegisterDto registerDto)
+    public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
     {
         try
         {
@@ -39,7 +39,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("auth/login")]
-    public async Task<IActionResult> Login(LoginDto loginDto)
+    public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
     {
         try
         {

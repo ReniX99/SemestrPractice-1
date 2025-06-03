@@ -56,8 +56,8 @@ export const useTasksStore = defineStore(
     async function completeTask(editableTask: ITask) {
       if ((editableTask.isActive = false)) return
 
-      editableTask.isActive = false
       await editTask(editableTask)
+      editableTask.isActive = false
     }
 
     return {

@@ -11,7 +11,7 @@
   import api from '@/services/axios'
 
   const modalStore = useModalStore()
-  const { purpose, task: incomingTask } = storeToRefs(modalStore)
+  const { purpose, task: incomingTask, userIds } = storeToRefs(modalStore)
 
   const formData = ref({
     title: modalStore.task?.title || '',
@@ -59,15 +59,7 @@
   const themeStore = useThemeStore()
   const { darkTheme } = storeToRefs(themeStore)
 
-  const users = ref<IUser[]>([])
-  onMounted(async () => {
-    try {
-      const response = await api.get<IUser[]>('/user')
-      users.value = response.data
-    } catch (err) {
-      console.log(err)
-    }
-  })
+  const users = ref<IUser[]>(userIds.value || [])
 </script>
 
 <template>
@@ -116,7 +108,7 @@
             </select>
           </div>
         </div>
-        <div class="flex flex-col gap-[6px]">
+        <div v-show="purpose === 'add'" class="flex flex-col gap-[6px]">
           <label>Пользователи</label>
           <select
             v-model="formData.userIds"

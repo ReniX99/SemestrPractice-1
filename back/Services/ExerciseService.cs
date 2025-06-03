@@ -51,4 +51,18 @@ public class ExerciseService
             IsActive = eu.Exercise.IsActive
         }).ToList();
     }
+
+    public async Task Update(int exerciseId, UpdateExerciseDto updateExerciseDto)
+    {
+        Exercise? exerciseEntity = await _exerciseRepository.Get(exerciseId);
+
+        if (exerciseEntity == null) throw new Exception("Not Found");
+
+        exerciseEntity.Title = updateExerciseDto.Title;
+        exerciseEntity.Date = updateExerciseDto.Date;
+        exerciseEntity.Priority = updateExerciseDto.Priority;
+        exerciseEntity.IsActive = updateExerciseDto.IsActive;
+
+        await _exerciseRepository.Update();
+    }
 }

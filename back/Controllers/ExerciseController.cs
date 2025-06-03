@@ -19,7 +19,7 @@ public class ExerciseController : ControllerBase
     }
     [HttpPost]
     [Authorize]
-    public async Task<IActionResult> Create(CreateExerciseDto createExerciseDto)
+    public async Task<IActionResult> Create([FromBody] CreateExerciseDto createExerciseDto)
     {
         int userId = _userService.GetUserId(HttpContext);
         int exerciseId = await _exerciseService.Create(createExerciseDto, userId);
@@ -36,5 +36,20 @@ public class ExerciseController : ControllerBase
         List<ExerciseDto> dto = await _exerciseService.GetAll(userId);
 
         return Ok(dto);
+    }
+
+    [HttpPut("{exerciseId:int}")]
+    [Authorize]
+    public async Task<IActionResult> Update([FromRoute] int exerciseId, [FromBody] UpdateExerciseDto updateExerciseDto)
+    {
+        try
+        {
+            await _exerciseService.Update(exerciseId, updateExerciseDto);
+            return Ok();
+        }
+        catch
+        {
+            return NotFound();
+        }
     }
 }

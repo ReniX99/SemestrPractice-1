@@ -1,4 +1,5 @@
 import type { ITask } from '@/types/ITask'
+import type { IUser } from '@/types/IUser'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
@@ -6,6 +7,7 @@ export const useModalStore = defineStore('modal', () => {
   const isOpen = ref(false)
   const purpose = ref('')
   const task = ref<ITask>()
+  const userIds = ref<IUser[]>()
 
   const open = (newPurpose: string, incomingTask?: ITask): void => {
     purpose.value = newPurpose
@@ -21,5 +23,5 @@ export const useModalStore = defineStore('modal', () => {
     task.value = undefined
   }
 
-  return { isOpen, purpose, task, open, close }
+  return { isOpen, purpose, task, userIds, open, close }
 })
