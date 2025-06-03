@@ -68,7 +68,7 @@
       </section>
       <TaskList />
       <Transition name="modal">
-        <ModalWindow v-if="isOpenModal" />
+        <ModalWindow v-show="isOpenModal" />
       </Transition>
     </div>
   </main>

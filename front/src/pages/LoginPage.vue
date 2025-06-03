@@ -13,7 +13,7 @@
     try {
       if (form.value.email === '' || form.value.password === '') return
 
-      await api.post('auth/login', form.value)
+      await api.post('user/auth/login', form.value)
 
       router.push({ name: 'MainPage' })
     } catch (err) {

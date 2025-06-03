@@ -4,9 +4,11 @@
   import { useTasksStore } from '@/stores/tasks-store'
   import { useThemeStore } from '@/stores/theme-store'
   import type { ITask } from '@/types/ITask'
+  import type { IUser } from '@/types/IUser'
   import { storeToRefs } from 'pinia'
-  import { ref } from 'vue'
+  import { onMounted, ref } from 'vue'
   import DateInput from './DateInput.vue'
+  import api from '@/services/axios'
 
   const modalStore = useModalStore()
   const { purpose, task: incomingTask } = storeToRefs(modalStore)
@@ -54,6 +56,16 @@
 
   const themeStore = useThemeStore()
   const { darkTheme } = storeToRefs(themeStore)
+
+  const users = ref<IUser[]>([])
+  onMounted(async () => {
+    try {
+      const response = await api.get<IUser[]>('/user')
+      users.value = response.data
+    } catch (err) {
+      console.log(err)
+    }
+  })
 </script>
 
 <template>
@@ -101,6 +113,12 @@
               <option class="text-[#272729]" value="Низкий">Низкий</option>
             </select>
           </div>
+        </div>
+        <div class="flex flex-col gap-[6px]">
+          <label>Пользователи</label>
+          <select multiple class="rounded-[6px] border-1 border-[#8e948e] p-[4px] text-[18px]">
+            <option v-for="user in users" :value="user.id">{{ user.email }}</option>
+          </select>
         </div>
         <button
           @click.prevent="handleForm"

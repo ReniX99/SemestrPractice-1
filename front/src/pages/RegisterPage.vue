@@ -16,7 +16,11 @@
         return
       if (form.value.password !== form.value.repeatPassword) return
 
-      await api.post('auth/register', form.value)
+      const rawBody = {
+        email: form.value.email,
+        password: form.value.password,
+      }
+      await api.post('user/auth/register', rawBody)
 
       router.push({ name: 'MainPage' })
     } catch (err) {
