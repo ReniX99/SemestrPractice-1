@@ -12,11 +12,37 @@ export const useTasksStore = defineStore(
     const dateStore = useDateStore()
     const { date } = storeToRefs(dateStore)
 
+    const sortOption = ref<string>('Все')
+
     const currentDateTasks = computed(() => {
-      return tasks.value
-        .filter((t) => t.date === date.value)
-        .slice()
-        .sort((a, b) => Number(b.isActive) - Number(a.isActive))
+      const todayTasks = tasks.value.filter((t) => t.date === date.value)
+
+      switch (sortOption.value) {
+        case 'Все':
+          return todayTasks.sort((a, b) => Number(b.isActive) - Number(a.isActive))
+
+        case 'Высокий':
+          return todayTasks
+            .filter((t) => t.priority === 'Высокий')
+            .sort((a, b) => Number(b.isActive) - Number(a.isActive))
+
+        case 'Средний':
+          return todayTasks
+            .filter((t) => t.priority === 'Средний')
+            .sort((a, b) => Number(b.isActive) - Number(a.isActive))
+
+        case 'Низкий':
+          return todayTasks
+            .filter((t) => t.priority === 'Низкий')
+            .sort((a, b) => Number(b.isActive) - Number(a.isActive))
+
+        default:
+          return todayTasks.sort((a, b) => Number(b.isActive) - Number(a.isActive))
+      }
+    })
+
+    const countActiveTasks = computed(() => {
+      return tasks.value.filter((t) => t.isActive === true && t.date === date.value).length
     })
 
     async function addTask(newTask: ITask) {
@@ -63,6 +89,8 @@ export const useTasksStore = defineStore(
     return {
       tasks,
       currentDateTasks,
+      countActiveTasks,
+      sortOption,
       addTask,
       editTask,
       deleteTask,

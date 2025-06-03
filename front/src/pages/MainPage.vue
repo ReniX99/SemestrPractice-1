@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { onMounted } from 'vue'
+  import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
   import TaskList from '@/components/TaskList.vue'
   import ModalWindow from '@/components/ModalWindow.vue'
   import ArrowButton from '@/components/ArrowButton.vue'
@@ -11,9 +11,11 @@
   import DateInput from '@/components/DateInput.vue'
   import { useDateStore } from '@/stores/date-store'
   import type { IUser } from '@/types/IUser'
+  import { useWebPushStore } from '@/stores/web-push-store'
+  import { useWebNotification, type UseWebNotificationOptions } from '@vueuse/core'
 
   const tasksStore = useTasksStore()
-  const { tasks } = storeToRefs(tasksStore)
+  const { tasks, countActiveTasks, sortOption } = storeToRefs(tasksStore)
 
   const modalStore = useModalStore()
   const { isOpen: isOpenModal, userIds } = storeToRefs(modalStore)
@@ -37,6 +39,53 @@
     const currentDate = new Date().toISOString().split('T')[0]
     date.value = currentDate
   })
+
+  onBeforeUnmount(() => {
+    if (intervalId.value) clearInterval(intervalId.value)
+  })
+
+  const webPushStore = useWebPushStore()
+  const { isSubscribed } = storeToRefs(webPushStore)
+  const intervalId = ref<number | null>(null)
+
+  const options: UseWebNotificationOptions = {
+    title: 'Важное уведомление',
+    body: `У вас есть невыполненные задачи!!!`,
+    dir: 'auto',
+    lang: 'ru',
+    renotify: true,
+    tag: 'test',
+  }
+
+  watch(isSubscribed, (newValue) => {
+    if (newValue) {
+      intervalId.value = setInterval(() => {
+        const { show } = useWebNotification(options)
+        show()
+      }, 10000)
+    } else {
+      if (intervalId.value) {
+        clearInterval(intervalId.value)
+        intervalId.value = null
+      }
+    }
+  })
+
+  watch(countActiveTasks, (newValue) => {
+    if (newValue === 0) {
+      if (intervalId.value) {
+        clearInterval(intervalId.value)
+        intervalId.value = null
+      }
+    } else {
+      if (isSubscribed.value && !intervalId.value) {
+        intervalId.value = setInterval(() => {
+          const { show } = useWebNotification(options)
+          show()
+        }, 10000)
+      }
+    }
+  })
 </script>
 
 <template>
@@ -46,14 +95,14 @@
         class="font-roboto mb-[60px] text-center text-3xl"
         :class="[darkTheme ? 'text-white' : 'text-[#292727]']"
       >
-        Самый НЕОБЫЧНЫЙ To-Do List
+        Менеджер задач
       </h1>
       <button
-        @click="themeStore.toggleTheme()"
+        @click="webPushStore.toggleSubscription"
         class="absolute top-[40px] right-[60px] cursor-pointer rounded-[8px] px-[12px] py-[8px] opacity-0 lg:opacity-100"
         :class="[darkTheme ? 'bg-white text-[#292727]' : 'bg-[#292727] text-white']"
       >
-        Сменить тему
+        Уведомления {{ isSubscribed ? 'включены' : 'отключены' }}
       </button>
       <section class="relative mb-[40px] flex flex-col items-center gap-[30px]">
         <div class="mx-auto flex items-center gap-[20px]">
@@ -67,6 +116,15 @@
         >
           Добавить задачу
         </button>
+        <select
+          v-model="sortOption"
+          class="absolute right-0 cursor-pointer rounded-[8px] border-2 border-[#1ce522] px-[12px] py-[9px] text-black focus:outline-none"
+        >
+          <option value="Все">Все</option>
+          <option value="Высокий">Высокий</option>
+          <option value="Средний">Средний</option>
+          <option value="Низкий">Низкий</option>
+        </select>
       </section>
       <TaskList />
       <Transition name="modal">
