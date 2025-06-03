@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace back.Controllers;
 
-[Route("auth")]
+[Route("user")]
 [ApiController]
 public class UserController : ControllerBase
 {
@@ -22,7 +22,7 @@ public class UserController : ControllerBase
         _userService = userService;
     }
 
-    [HttpPost("register")]
+    [HttpPost("auth/register")]
     public async Task<IActionResult> Register(RegisterDto registerDto)
     {
         try
@@ -38,7 +38,7 @@ public class UserController : ControllerBase
         }
     }
 
-    [HttpPost("login")]
+    [HttpPost("auth/login")]
     public async Task<IActionResult> Login(LoginDto loginDto)
     {
         try
@@ -52,5 +52,14 @@ public class UserController : ControllerBase
         {
             return Unauthorized(e.Message);
         }
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
+    {
+        int userId = _userService.GetUserId(HttpContext);
+        List<UserDto> users = await _userService.GetAll(userId);
+
+        return Ok(users);
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using back.DTOs.User;
+using back.Entities;
 using back.JWT;
 using back.Repositories;
 
@@ -67,5 +68,16 @@ public class UserService
         var userId = Convert.ToInt32(stringUserId);
 
         return userId;
+    }
+
+    public async Task<List<UserDto>> GetAll(int userId)
+    {
+        List<User> userEntities = await _userRepository.GetAll(userId);
+
+        return userEntities.Select(u => new UserDto
+        {
+            Id = u.Id,
+            Email = u.Email
+        }).ToList();
     }
 }

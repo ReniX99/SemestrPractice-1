@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using back.Data;
@@ -11,9 +12,11 @@ using back.Data;
 namespace back.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250603071728_ChangeTaskEntity")]
+    partial class ChangeTaskEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,7 +25,7 @@ namespace back.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("back.Entities.Exercise", b =>
+            modelBuilder.Entity("back.Entities.Task", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -46,22 +49,22 @@ namespace back.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Exercises");
+                    b.ToTable("Tasks");
                 });
 
-            modelBuilder.Entity("back.Entities.ExerciseUser", b =>
+            modelBuilder.Entity("back.Entities.TaskUser", b =>
                 {
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("ExerciseId")
+                    b.Property<int>("TaskId")
                         .HasColumnType("integer");
 
-                    b.HasKey("UserId", "ExerciseId");
+                    b.HasKey("UserId", "TaskId");
 
-                    b.HasIndex("ExerciseId");
+                    b.HasIndex("TaskId");
 
-                    b.ToTable("ExerciseUsers");
+                    b.ToTable("TaskUsers");
                 });
 
             modelBuilder.Entity("back.Entities.User", b =>
@@ -85,11 +88,11 @@ namespace back.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("back.Entities.ExerciseUser", b =>
+            modelBuilder.Entity("back.Entities.TaskUser", b =>
                 {
-                    b.HasOne("back.Entities.Exercise", "Exercise")
+                    b.HasOne("back.Entities.Task", "Task")
                         .WithMany()
-                        .HasForeignKey("ExerciseId")
+                        .HasForeignKey("TaskId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -99,7 +102,7 @@ namespace back.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Exercise");
+                    b.Navigation("Task");
 
                     b.Navigation("User");
                 });

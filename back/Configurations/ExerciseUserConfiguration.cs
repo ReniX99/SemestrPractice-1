@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace back.Configurations;
 
-public class TaskUserConfiguration : IEntityTypeConfiguration<TaskUser>
+public class ExerciseUserConfiguration : IEntityTypeConfiguration<ExerciseUser>
 {
-    public void Configure(EntityTypeBuilder<TaskUser> builder)
+    public void Configure(EntityTypeBuilder<ExerciseUser> builder)
     {
-        builder.HasKey(uk => new { uk.UserId, uk.TaskId });
+        builder.HasKey(uk => new { uk.UserId, uk.ExerciseId });
 
         builder
             .HasOne(uk => uk.User)
@@ -17,8 +17,8 @@ public class TaskUserConfiguration : IEntityTypeConfiguration<TaskUser>
             .HasForeignKey(uk => uk.UserId);
 
         builder
-            .HasOne(uk => uk.Task)
+            .HasOne(uk => uk.Exercise)
             .WithMany()
-            .HasForeignKey(uk => uk.TaskId);
+            .HasForeignKey(uk => uk.ExerciseId);
     }
 }

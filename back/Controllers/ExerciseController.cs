@@ -1,0 +1,29 @@
+using System;
+using back.DTOs.Exercise;
+using back.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
+namespace back.Controllers;
+
+[Route("task")]
+[ApiController]
+public class ExerciseController : ControllerBase
+{
+    private readonly UserService _userService;
+    private readonly ExerciseService _exerciseService;
+    public ExerciseController(UserService userService, ExerciseService exerciseService)
+    {
+        _userService = userService;
+        _exerciseService = exerciseService;
+    }
+    [HttpPost]
+    [Authorize]
+    public async Task<IActionResult> Create(CreateExerciseDto createExerciseDto)
+    {
+        int userId = _userService.GetUserId(HttpContext);
+        await _exerciseService.Create(createExerciseDto, userId);
+
+        return StatusCode(201);
+    }
+}

@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace back.Configurations;
 
-public class TaskConfiguration : IEntityTypeConfiguration<Entities.Task>
+public class ExerciseConfiguration : IEntityTypeConfiguration<Exercise>
 {
-    public void Configure(EntityTypeBuilder<Entities.Task> builder)
+    public void Configure(EntityTypeBuilder<Exercise> builder)
     {
         builder.HasKey(t => t.Id);
     }

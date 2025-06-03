@@ -39,4 +39,9 @@ public class UserRepository
 
         return userModel;
     }
+
+    public async Task<List<User>> GetAll(int userId)
+    {
+        return await _context.Users.Where(u => u.Id != userId).ToListAsync();
+    }
 }
